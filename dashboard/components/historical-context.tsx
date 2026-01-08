@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis, TooltipProps } from "recharts"
+import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 
 interface DataPoint {
   date: string
@@ -12,7 +12,7 @@ interface DataPoint {
 type TimeRange = "30d" | "6m" | "1y" | "all";
 
 // Custom Tooltip Component to show date and price
-const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
+const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
@@ -20,7 +20,7 @@ const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
         <p className="text-sm font-semibold text-gray-700 mb-1">
           Date: {data.fullDate || data.date}
         </p>
-        {payload.map((entry, index) => (
+        {payload.map((entry: any, index: number) => (
           entry.value !== null && (
             <p key={index} className="text-sm" style={{ color: entry.color }}>
               {entry.name}: RM {entry.value?.toFixed(2)}
