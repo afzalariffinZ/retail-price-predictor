@@ -44,12 +44,12 @@ export function GeminiAnalyst({ reasoning = "" }: { reasoning?: string }) {
     <Card className="col-span-full border-primary/20 bg-primary/5">
       <CardHeader className="flex flex-row items-center gap-2 pb-2">
         <Sparkles className="h-5 w-5 text-primary" />
-        <CardTitle className="text-lg font-medium">Gemini Price Reasoning (Flash 2.0)</CardTitle>
+        <CardTitle className="text-lg font-medium">AI Reasoning</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex items-start gap-4">
+        <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
             <motion.div 
-               className="font-mono text-sm leading-relaxed text-muted-foreground"
+               className="font-mono text-xs sm:text-sm leading-relaxed text-muted-foreground flex-1"
                variants={container}
                initial="hidden"
                animate="visible"
@@ -61,16 +61,16 @@ export function GeminiAnalyst({ reasoning = "" }: { reasoning?: string }) {
               ))}
             </motion.div>
             
-            <div className="flex flex-col gap-2 min-w-[80px]">
+            <div className="flex sm:flex-col gap-3 sm:gap-2 sm:min-w-[80px]">
                 <div className="flex flex-col items-center gap-1 text-xs text-blue-500">
-                    <ShieldCheck className="h-6 w-6" />
-                    <span>Stabilized</span>
+                    <ShieldCheck className="h-5 w-5 sm:h-6 sm:w-6" />
+                    <span className="text-[10px] sm:text-xs">Stabilized</span>
                 </div>
                 
                 {hasHighUSD && (
                     <div className="flex flex-col items-center gap-1 text-xs text-red-500">
-                        <TrendingUp className="h-6 w-6" />
-                        <span>High USD</span>
+                        <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6" />
+                        <span className="text-[10px] sm:text-xs">High USD</span>
                     </div>
                 )}
             </div>

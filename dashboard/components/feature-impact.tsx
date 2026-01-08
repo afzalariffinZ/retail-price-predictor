@@ -26,18 +26,19 @@ export function FeatureImpact({ data = [] }: { data?: FeatureImpactData[] }) {
   return (
     <Card className="col-span-full md:col-span-1 lg:col-span-1">
       <CardHeader>
-        <CardTitle>Feature Impact (Live SHAP)</CardTitle>
+        <CardTitle className="text-base sm:text-lg">Feature Impact (Live SHAP)</CardTitle>
       </CardHeader>
-      <CardContent className="h-[300px]">
+      <CardContent className="h-[280px] sm:h-[320px]">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart layout="vertical" data={chartData} margin={{ left: 40 }}>
+          <BarChart layout="vertical" data={chartData} margin={{ left: 10, right: 10, top: 5, bottom: 5 }}>
             <XAxis type="number" hide />
             <YAxis 
                 dataKey="name" 
                 type="category" 
-                width={100}
-                tick={{ fontSize: 12 }} 
+                width={120}
+                tick={{ fontSize: 11, fill: 'currentColor' }} 
                 interval={0}
+                tickLine={false}
             />
             <Tooltip 
                 cursor={{ fill: 'transparent' }}

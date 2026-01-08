@@ -10,26 +10,25 @@ import { HistoricalContext } from "@/components/historical-context"
 import { Footer } from "@/components/footer"
 import { LoadingState } from "@/components/loading-state"
 
-import { Chatbot } from "@/components/chatbot"
-
 export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(false)
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(typeof window !== 'undefined' && window.innerWidth >= 768)
   const [selectedItem, setSelectedItem] = useState("ayam bersih")
   const [selectedState, setSelectedState] = useState("selangor")
+  const [premiseType, setPremiseType] = useState("hypermarket")
+  const [actualMarketPrice, setActualMarketPrice] = useState("")
   const [usdRate, setUsdRate] = useState([4.75])
   const [usdLag60, setUsdLag60] = useState([4.70])
   const [dieselPrice, setDieselPrice] = useState([2.15])
   const [dieselLag30, setDieselLag30] = useState([2.10])
   const [isFestive, setIsFestive] = useState(false)
-  const [targetDate, setTargetDate] = useState("")
+  const [targetDate, setTargetDate] = useState(new Date().toISOString().split('T')[0])
   const [useHistoricalMode, setUseHistoricalMode] = useState(false)
   
   // Prediction state
   const [currentPrediction, setCurrentPrediction] = useState(9.42)
-  const [stickyPrice, setStickyPrice] = useState(9.46)
-  const [asymmetryGap, setAsymmetryGap] = useState(0.04)
-  const [alertLevel, setAlertLevel] = useState("High Risk")
+  const [auditReport, setAuditReport] = useState<any>(null)
+  const [causalAnalysis, setCausalAnalysis] = useState<any>(null)
   const [geminiReasoning, setGeminiReasoning] = useState("")
   const [featureImpact, setFeatureImpact] = useState<Array<{name: string, value: number}>>([])
   const [historyData, setHistoryData] = useState<Array<{date: string, price: number}>>([])
@@ -42,7 +41,13 @@ export default function Dashboard() {
       const requestBody: any = {
         item: selectedItem,
         state: selectedState,
+        premise_type: premiseType,
         is_festive: isFestive ? 1 : 0
+      }
+
+      // Add actual market price if provided
+      if (actualMarketPrice && parseFloat(actualMarketPrice) > 0) {
+        requestBody.actual_market_price = parseFloat(actualMarketPrice)
       }
 
       // If using historical mode, send target_date; otherwise send slider values
@@ -76,14 +81,39 @@ export default function Dashboard() {
         return
       }
       
-      setCurrentPrediction(data.price)
-      setStickyPrice(data.sticky_price || data.price + 0.04)
-      setAsymmetryGap(data.asymmetry_gap || 0.04)
-      setAlertLevel(data.alert_level || "High Risk")
-      setGeminiReasoning(data.reasoning)
-      setFeatureImpact(data.feature_impact || [])
-      setHistoryData(data.history || [])
-      setFutureData(data.future || [])
+      // Extract from new API structure
+      const pricingHub = data.pricing_hub || {}
+      const visualAnalytics = data.visual_analytics || {}
+      const sentinelMeta = data.sentinel_meta || {}
+      
+      setCurrentPrediction(pricingHub.fair_price || 0)
+      setAuditReport(pricingHub.audit_report || null)
+      
+      // Map sentinel_meta regime to causalAnalysis
+      setCausalAnalysis({
+        regime: sentinelMeta.regime || "STABLE",
+        is_sticky: sentinelMeta.regime === "DOWN" && pricingHub.audit_report?.color === "Red"
+      })
+      
+      setGeminiReasoning(data.sentinel_reasoning || "")
+      
+      // Map visual_analytics.feature_impact to our format
+      if (visualAnalytics.feature_impact && visualAnalytics.feature_impact.length > 0) {
+        setFeatureImpact(
+          visualAnalytics.feature_impact.map((item: any) => ({
+            name: item.label,
+            value: item.impact
+          }))
+        )
+      }
+      
+      // Map visual_analytics historical and future lines
+      if (visualAnalytics.historical_line) {
+        setHistoryData(visualAnalytics.historical_line)
+      }
+      if (visualAnalytics.future_line) {
+        setFutureData(visualAnalytics.future_line)
+      }
     } catch (error) {
       console.error('Error fetching prediction:', error)
       // Keep existing values on error
@@ -94,6 +124,14 @@ export default function Dashboard() {
 
   return (
     <div className="flex h-screen overflow-hidden bg-background text-foreground">
+      {/* Backdrop overlay for mobile */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+      
       <Sidebar 
          isOpen={isSidebarOpen}
          onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -102,6 +140,10 @@ export default function Dashboard() {
          setSelectedItem={setSelectedItem}
          selectedState={selectedState}
          setSelectedState={setSelectedState}
+         premiseType={premiseType}
+         setPremiseType={setPremiseType}
+         actualMarketPrice={actualMarketPrice}
+         setActualMarketPrice={setActualMarketPrice}
          usdRate={usdRate}
          setUsdRate={setUsdRate}
          usdLag60={usdLag60}
@@ -121,16 +163,15 @@ export default function Dashboard() {
       <main className="flex-1 overflow-y-auto relative">
         {isLoading && <LoadingState />}
         
-        <div className="container mx-auto p-6 max-w-7xl space-y-8">
+        <div className="container mx-auto p-3 sm:p-4 md:p-6 max-w-7xl space-y-4 sm:space-y-6 md:space-y-8">
           <Header />
           
           <div className="space-y-8">
             <section>
                 <HeroPrediction 
-                  prediction={currentPrediction} 
-                  stickyPrice={stickyPrice}
-                  asymmetryGap={asymmetryGap}
-                  alertLevel={alertLevel}
+                  prediction={currentPrediction}
+                  auditReport={auditReport}
+                  causalAnalysis={causalAnalysis}
                 />
             </section>
             
@@ -149,8 +190,6 @@ export default function Dashboard() {
           
           <Footer />
         </div>
-        
-        <Chatbot currentPrediction={currentPrediction} currentItem={selectedItem} />
       </main>
     </div>
   )
