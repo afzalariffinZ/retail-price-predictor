@@ -28,7 +28,9 @@ export function HeroPrediction({
   const isSticky = causalAnalysis?.is_sticky || false
 
   return (
-    <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+    <div className="space-y-3">
+      <h2 className="text-xl sm:text-2xl font-bold">Malaysian National Market Sentinel</h2>
+      <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Fair Price Model</CardTitle>
@@ -36,10 +38,10 @@ export function HeroPrediction({
         </CardHeader>
         <CardContent>
           <div className="text-2xl sm:text-3xl font-bold">
-            RM {fairPrice.toFixed(2)}
+            {prediction ? `RM ${fairPrice.toFixed(2)}` : 'Awaiting Analysis'}
           </div>
           <p className="text-xs text-muted-foreground mt-1">
-            Based on XGBoost causal model
+            {prediction ? 'Based on XGBoost causal model' : 'Execute analysis for prediction'}
           </p>
         </CardContent>
       </Card>
@@ -101,6 +103,7 @@ export function HeroPrediction({
           </p>
         </CardContent>
       </Card>
+      </div>
     </div>
   )
 }

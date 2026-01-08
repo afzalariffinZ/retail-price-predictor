@@ -9,26 +9,25 @@ interface FeatureImpactData {
 }
 
 export function FeatureImpact({ data = [] }: { data?: FeatureImpactData[] }) {
-  // Default data if backend hasn't responded yet
-  const defaultData = [
-    { name: "USD Rate (60d)", value: 85 },
-    { name: "Diesel Price", value: 45 },
-    { name: "Festive Season", value: 20 },
-    { name: "Supply Policy", value: -15.5 },
-  ]
+  const hasData = data.length > 0
 
-  const chartData = (data.length > 0 ? data : defaultData).map(item => ({
+  const chartData = hasData ? data.map(item => ({
     name: item.name,
     impact: item.value,
     fill: item.value >= 0 ? "#ef4444" : "#3b82f6" // Red for positive, Blue for negative
-  }))
+  })) : []
 
   return (
     <Card className="col-span-full md:col-span-1 lg:col-span-1">
       <CardHeader>
-        <CardTitle className="text-base sm:text-lg">Feature Impact (Live SHAP)</CardTitle>
+        <CardTitle className="text-base sm:text-lg">Key Drivers of Predicted Price</CardTitle>
       </CardHeader>
       <CardContent className="h-[280px] sm:h-[320px]">
+        {!hasData ? (
+          <div className="flex items-center justify-center h-full text-sm text-muted-foreground">
+            Execute analysis to view feature impact
+          </div>
+        ) : (
         <ResponsiveContainer width="100%" height="100%">
           <BarChart layout="vertical" data={chartData} margin={{ left: 10, right: 10, top: 5, bottom: 5 }}>
             <XAxis type="number" hide />
@@ -42,7 +41,15 @@ export function FeatureImpact({ data = [] }: { data?: FeatureImpactData[] }) {
             />
             <Tooltip 
                 cursor={{ fill: 'transparent' }}
-                contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                contentStyle={{ 
+                  backgroundColor: '#1e293b',
+                  color: '#f1f5f9',
+                  borderRadius: '8px', 
+                  border: '1px solid #334155', 
+                  boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.3)',
+                  padding: '8px 12px'
+                }}
+                labelStyle={{ color: '#f1f5f9', fontWeight: 'bold', marginBottom: '4px' }}
             />
             <Bar dataKey="impact" radius={[0, 4, 4, 0]}>
                 {chartData.map((entry, index) => (
@@ -51,6 +58,7 @@ export function FeatureImpact({ data = [] }: { data?: FeatureImpactData[] }) {
             </Bar>
           </BarChart>
         </ResponsiveContainer>
+        )}
       </CardContent>
     </Card>
   )

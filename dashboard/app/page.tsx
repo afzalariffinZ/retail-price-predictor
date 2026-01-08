@@ -50,15 +50,17 @@ export default function Dashboard() {
         requestBody.actual_market_price = parseFloat(actualMarketPrice)
       }
 
-      // If using historical mode, send target_date; otherwise send slider values
-      if (useHistoricalMode && targetDate) {
+      // If Manual Simulation Mode is OFF, use target_date; if ON, use slider values
+      if (!useHistoricalMode && targetDate) {
         requestBody.target_date = targetDate
-      } else {
+      } else if (useHistoricalMode) {
         requestBody.usd_now = usdRate[0]
         requestBody.usd_lag_60 = usdLag60[0]
         requestBody.diesel_now = dieselPrice[0]
         requestBody.diesel_lag_30 = dieselLag30[0]
       }
+      
+      console.log('Sending request:', requestBody)
 
       const response = await fetch('http://127.0.0.1:8000/predict', {
         method: 'POST',
@@ -110,9 +112,11 @@ export default function Dashboard() {
       // Map visual_analytics historical and future lines
       if (visualAnalytics.historical_line) {
         setHistoryData(visualAnalytics.historical_line)
+        console.log('Historical data:', visualAnalytics.historical_line)
       }
       if (visualAnalytics.future_line) {
         setFutureData(visualAnalytics.future_line)
+        console.log('Future data (orange line):', visualAnalytics.future_line)
       }
     } catch (error) {
       console.error('Error fetching prediction:', error)
@@ -164,7 +168,7 @@ export default function Dashboard() {
         {isLoading && <LoadingState />}
         
         <div className="container mx-auto p-3 sm:p-4 md:p-6 max-w-7xl space-y-4 sm:space-y-6 md:space-y-8">
-          <Header />
+          <Header onToggle={() => setIsSidebarOpen(!isSidebarOpen)} />
           
           <div className="space-y-8">
             <section>

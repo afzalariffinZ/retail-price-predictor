@@ -5,11 +5,11 @@ import { Sparkles, ShieldCheck, TrendingUp } from "lucide-react"
 import { motion } from "framer-motion"
 
 export function GeminiAnalyst({ reasoning = "" }: { reasoning?: string }) {
-  const defaultText = "The predicted price of RM 9.42 is primarily driven by the High USD/MYR rate of 4.75 from 60 days ago. While current diesel prices have stabilized, the supply chain lag for poultry feed remains the dominant pressure point."
+  const defaultText = "Execute analysis to generate AI-powered causal reasoning for price predictions"
   const text = reasoning || defaultText
   
   const words = text.split(" ")
-  const hasHighUSD = text.toLowerCase().includes("high usd")
+  const hasHighUSD = reasoning ? text.toLowerCase().includes("high usd") : false
 
   const container = {
     hidden: { opacity: 0 },

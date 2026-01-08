@@ -91,17 +91,10 @@ export function Sidebar({
               <BarChart3 className="h-5 w-5 text-primary-foreground" />
             </div>
             <h1 className="font-bold text-lg leading-tight">
-              KPDN<br />
-              <span className="text-sm font-normal text-muted-foreground">Intelligence Hub v2.0</span>
+              Helang<br />
+              <span className="text-sm font-normal text-muted-foreground">Malaysian National Market Sentinel</span>
             </h1>
           </div>
-          <button
-            onClick={onToggle}
-            className="md:hidden h-8 w-8 rounded-full hover:bg-muted flex items-center justify-center"
-            aria-label="Close sidebar"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </button>
         </div>
 
       <div className="space-y-6">
@@ -298,18 +291,6 @@ export function Sidebar({
       >
         <ChevronLeft className="h-3 w-3 sm:h-4 sm:w-4" />
       </button>
-      
-      {/* Open Button (when closed) */}
-      {!isOpen && (
-        <button
-          onClick={onToggle}
-          className="fixed left-4 top-4 z-50 h-9 px-4 rounded-md border bg-background hover:bg-accent hover:text-accent-foreground transition-colors flex items-center gap-2 text-sm font-medium whitespace-nowrap"
-          aria-label="Open sidebar"
-        >
-          <ChevronRight className="h-4 w-4" />
-          <span>Make an Analysis</span>
-        </button>
-      )}
     </div>
   )
 }
