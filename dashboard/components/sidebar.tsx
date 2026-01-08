@@ -77,7 +77,7 @@ export function Sidebar({
       isOpen && "shadow-2xl md:shadow-none"
     )}>
       <div className={cn(
-        "w-80 p-4 sm:p-6 space-y-4 sm:space-y-6 md:space-y-8 h-full overflow-y-auto transition-opacity duration-300",
+        "w-80 p-4 sm:p-6 space-y-4 sm:space-y-6 md:space-y-8 h-full overflow-y-auto transition-opacity duration-300 pb-20",
         "[&::-webkit-scrollbar]:w-2",
         "[&::-webkit-scrollbar-track]:bg-transparent",
         "[&::-webkit-scrollbar-thumb]:bg-primary/20",
@@ -167,15 +167,12 @@ export function Sidebar({
             <Calendar className="h-4 w-4" />
             Target Date
           </label>
-          <div className="relative">
-            <Input 
-              type="date" 
-              value={targetDate}
-              onChange={(e) => setTargetDate(e.target.value)}
-              className="w-full pl-10"
-            />
-            <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
-          </div>
+          <Input 
+            type="date" 
+            value={targetDate}
+            onChange={(e) => setTargetDate(e.target.value)}
+            className="w-full [&::-webkit-calendar-picker-indicator]:invert"
+          />
           <p className="text-xs text-muted-foreground">Backend will fetch USD/Diesel from database</p>
         </div>
 
