@@ -37,6 +37,11 @@ export default function Dashboard() {
   const handleExecute = async () => {
     setIsLoading(true)
     
+    // Auto-close sidebar on mobile after clicking execute
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      setIsSidebarOpen(false)
+    }
+    
     try {
       const requestBody: any = {
         item: selectedItem,
