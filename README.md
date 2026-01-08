@@ -3,9 +3,13 @@
 
 A sophisticated price monitoring and prediction system designed to detect price anomalies and profiteering in essential goods across Malaysian states. Built with machine learning and AI-powered economic reasoning to provide real-time market surveillance.
 
-<img width="2522" height="1171" alt="image" src="https://github.com/user-attachments/assets/e081726c-0b17-46a9-afdb-97e445f725c9" />
+**[Try the live application →](https://helang.vercel.app/)**
+
+Test the dashboard with real-time predictions and AI-powered market analysis.
 
 ## 🎯 Overview
+
+<img width="2522" height="1171" alt="image" src="https://github.com/user-attachments/assets/e081726c-0b17-46a9-afdb-97e445f725c9" />
 
 Helang (named after the Malaysian eagle) is a full-stack data science application that serves as a "market sentinel" for monitoring essential commodity prices in Malaysia. The system combines XGBoost predictive models with Google's Gemini AI to provide:
 
