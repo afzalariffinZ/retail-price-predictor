@@ -17,7 +17,8 @@ app = FastAPI(title="Helang: Malaysian National Market Sentinel")
 
 origins = [
     "http://localhost:1000",
-    "https://your-frontend-domain.com", 
+    "https://helang.vercel.app",
+    "https://retail-price-predictor.vercel.app" 
 ]
 
 app.add_middleware(

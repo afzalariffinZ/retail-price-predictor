@@ -62,7 +62,9 @@ export default function Dashboard() {
       
       console.log('Sending request:', requestBody)
 
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000'
+      const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000').replace(/\/$/, '')
+      console.log('API URL:', `${apiUrl}/predict`)
+      
       const response = await fetch(`${apiUrl}/predict`, {
         method: 'POST',
         headers: {
