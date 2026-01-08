@@ -7,9 +7,10 @@ A sophisticated price monitoring and prediction system designed to detect price 
 
 Test the dashboard with real-time predictions and AI-powered market analysis.
 
+<img width="2522" height="1171" alt="image" src="https://github.com/user-attachments/assets/e081726c-0b17-46a9-afdb-97e445f725c9" />
+
 ## 🎯 Overview
 
-<img width="2522" height="1171" alt="image" src="https://github.com/user-attachments/assets/e081726c-0b17-46a9-afdb-97e445f725c9" />
 
 Helang (named after the Malaysian eagle) is a full-stack data science application that serves as a "market sentinel" for monitoring essential commodity prices in Malaysia. The system combines XGBoost predictive models with Google's Gemini AI to provide:
 
