@@ -15,9 +15,15 @@ from datetime import datetime, timedelta
 load_dotenv()
 app = FastAPI(title="Helang: Malaysian National Market Sentinel")
 
+origins = [
+    "http://localhost:1000",
+    "https://your-frontend-domain.com", 
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
