@@ -176,7 +176,7 @@ async def get_prediction(data: PriceInput):
         gap = data.actual_market_price - fair_prediction
         
         if gap > (2 * tolerance_buffer):
-            status, color = "HIGH RISK (Profiteering Suspected)", "Red"
+            status, color = "HIGH RISK (High Price Anomaly)", "Red"
         elif gap > tolerance_buffer:
             status, color = "CAUTION (Significant Asymmetry)", "Yellow"
         elif gap < -tolerance_buffer:
