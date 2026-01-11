@@ -187,9 +187,7 @@ export default function Dashboard() {
                 />
             </section>
             
-            <section>
-                <GeminiAnalyst reasoning={geminiReasoning} />
-            </section>
+
             
             <section>
                 <FeatureImpact data={featureImpact} />
