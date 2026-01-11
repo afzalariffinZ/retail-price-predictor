@@ -200,9 +200,12 @@ async def get_prediction(data: PriceInput):
         f"In 2 sentences, explain if the markup is justified by structural overhead or indicates price stickiness."
     )
     try:
-        reasoning = gemini_model.generate_content(prompt).text.strip()
-    except:
-        reasoning = "Causal reasoning engine busy. Analytical output remains valid."
+        response = gemini_model.generate_content(prompt)
+        reasoning = response.text.strip()
+    except Exception as e:
+        # Log the actual error for debugging
+        print(f"Gemini API Error: {type(e).__name__}: {str(e)}")
+        reasoning = f"Causal reasoning temporarily unavailable. Error: {type(e).__name__}. Analytical output remains valid."
 
     # H. SENTINEL DATA ASSEMBLY
     hist_df = df_history[(df_history['item'] == official_item_name) & 
